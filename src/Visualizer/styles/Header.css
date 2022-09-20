@@ -1,0 +1,15 @@
+.navbar {
+    box-shadow: 11px 10px 29px 0px rgba(179,179,179,0.49);
+    -webkit-box-shadow: 11px 10px 29px 0px rgba(179,179,179,0.49);
+    -moz-box-shadow: 11px 10px 29px 0px rgba(179,179,179,0.49);
+    border-radius: 20px;
+    background-color: #f8f8f8;
+}
+
+.github-icon {
+    padding-right: 5px;
+}
+
+.navbar-brand {
+    color: #1F1D36;
+}

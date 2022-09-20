@@ -1,0 +1,37 @@
+li.list-group-item {
+  padding: auto;
+  border: 0;
+}
+
+.interface-card {
+  min-height: 320px;
+}
+
+p {
+  display: flex;
+  text-align: left;
+  margin: 0px;
+  color: #1F1D36;
+}
+
+.control-btn {
+  display: flex;
+}
+
+.btn-col-start {
+  padding: 0;
+  padding-right: 10px;
+}
+
+.btn-col-clear {
+  padding: 0;
+  padding-left: 10px;
+}
+
+.row {
+  margin: 0px;
+}
+
+.btn-outline-dark {
+  border-color: #1F1D36 !important;
+}
