@@ -146,14 +146,23 @@ function App() {
 
   // Handle Maze Control
   function handleMazeSm() {
+    if (state.isClearing || state.isGeneratingMaze || state.isVisualizing) {
+      return;
+    }
     setState((prev) => ({ ...prev, mazeSize: "sm" }));
   }
 
   function handleMazeMd() {
+    if (state.isClearing || state.isGeneratingMaze || state.isVisualizing) {
+      return;
+    }
     setState((prev) => ({ ...prev, mazeSize: "md" }));
   }
 
   function handleMazeLg() {
+    if (state.isClearing || state.isGeneratingMaze || state.isVisualizing) {
+      return;
+    }
     setState((prev) => ({ ...prev, mazeSize: "lg" }));
   }
 
