@@ -39,6 +39,10 @@
   animation-fill-mode: forwards;
 }
 
+.node:hover {
+  opacity: 0.1;
+}
+
 @keyframes visitedAnimation {
   0% {
     transform: scale(1);

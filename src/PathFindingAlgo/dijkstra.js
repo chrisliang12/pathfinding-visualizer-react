@@ -10,7 +10,11 @@ export function dijkstra(grid, startNode, finishNode) {
     let closestNode = unvisitedNodes.shift();
     if (closestNode.isWall) continue;
     if (closestNode.distance === Infinity) return visitedNodesInOrder;
-    if (closestNode === finishNode) return visitedNodesInOrder;
+    if (closestNode === finishNode) {
+      closestNode.isVisited = true;
+      visitedNodesInOrder.push(closestNode);
+      return visitedNodesInOrder;
+    }
     closestNode.isVisited = true;
     visitedNodesInOrder.push(closestNode);
     updateUnvisitedNeighbours(closestNode, grid);

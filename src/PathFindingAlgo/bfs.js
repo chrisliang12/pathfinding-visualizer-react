@@ -1,5 +1,4 @@
 export function bfs(grid, startNode, finishNode) {
-    console.log(startNode);
     if (!startNode || !finishNode || startNode === finishNode) {
       return false;
     }
@@ -9,7 +8,11 @@ export function bfs(grid, startNode, finishNode) {
     while (unvisitedNodes.length !== 0) {
       let closestNode = unvisitedNodes.shift();
       if (closestNode.isWall) continue;
-      if (closestNode === finishNode) return visitedNodesInOrder;
+      if (closestNode === finishNode) {
+        visitedNodesInOrder.push(closestNode);
+        closestNode.isVisited = true;
+        return visitedNodesInOrder;
+      }
       visitedNodesInOrder.push(closestNode);
       closestNode.isVisited = true;
       let unvisitedNeighbours = getUnvisitedNeighbours(closestNode, grid);

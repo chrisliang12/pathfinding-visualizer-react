@@ -48,8 +48,8 @@ function App() {
       setState((prev) => ({
         ...prev,
         nodeWidth: nodeWidth,
-        gridWidth: (nodeWidth) * prev.grid[0].length + 23,
-        gridHeight: (nodeWidth) * prev.grid.length + 23,
+        gridWidth: nodeWidth * prev.grid[0].length + 23,
+        gridHeight: nodeWidth * prev.grid.length + 23,
       }));
     }
     window.addEventListener("resize", handleResize);
@@ -220,7 +220,13 @@ function App() {
       ...prevState,
       grid: prevState.grid.map((prevRow, prevRowId) => {
         return prevRow.map((prevNode, prevNodeId) => {
-          return { ...prevNode, isVisited: false, isPath: false };
+          return {
+            ...prevNode,
+            isVisited: false,
+            isPath: false,
+            distance: Infinity,
+            totalDistance: Infinity,
+          };
         });
       }),
     }));
@@ -239,6 +245,8 @@ function App() {
             isVisited: false,
             isPath: false,
             isWall: false,
+            distance: Infinity,
+            totalDistance: Infinity,
           };
         });
       }),
@@ -249,6 +257,9 @@ function App() {
     if (state.isClearing || state.isGeneratingMaze || state.isVisualizing) {
       return;
     }
+
+    // disable all control buttons during visualization
+    document.querySelectorAll(".btn").forEach(element => {element.classList.add("disabled")})
 
     switch (state.currentAlgorithm) {
       case "dfs":
@@ -278,6 +289,7 @@ function App() {
             ...prev,
             isVisualizing: false,
           }));
+          document.querySelectorAll(".btn").forEach(element => {element.classList.remove("disabled")})
         }, i * (1 * state.animateSpeed));
         return;
       }
@@ -317,15 +329,9 @@ function App() {
       ...prev,
       grid: newGrid,
     }));
-    for (let i = 1; i <= visitedNodesInOrder.length; i++) {
+    for (let i = 1; i < visitedNodesInOrder.length; i++) {
       const node = visitedNodesInOrder[i];
-      if (i === visitedNodesInOrder.length) {
-        setTimeout(() => {
-          animatePath(visitedNodesInOrder, nodesInShortestPath);
-        }, i * state.animateSpeed);
-        return;
-      }
-
+      // animate visited nodes
       setTimeout(() => {
         setState((prevState) => {
           return {
@@ -342,6 +348,23 @@ function App() {
           };
         });
       }, i * state.animateSpeed);
+
+      if (i === visitedNodesInOrder.length - 1) {
+        if (node.row === state.endNode[0] && node.col === state.endNode[1]) {
+          setTimeout(() => {
+            animatePath(visitedNodesInOrder, nodesInShortestPath);
+          }, i * state.animateSpeed);
+        } else {
+          setTimeout(() => {
+            setState((prev) => ({
+              ...prev,
+              isVisualizing: false,
+            }));
+            document.querySelectorAll(".btn").forEach(element => {element.classList.remove("disabled")})
+          }, i * state.animateSpeed);
+        }
+        return;
+      }
     }
     setState((prev) => ({ ...prev, isVisualizing: false }));
   }
@@ -480,7 +503,13 @@ function App() {
         className="container-fluid page"
         style={{
           marginTop: `${
-            window.innerWidth < 800 ? 0 : state.mazeSize === "sm" ? 150 : state.mazeSize === "md" ? 50 : 0
+            window.innerWidth < 800
+              ? 0
+              : state.mazeSize === "sm"
+              ? 150
+              : state.mazeSize === "md"
+              ? 50
+              : 0
           }px`,
         }}
       >
@@ -493,39 +522,42 @@ function App() {
             }}
           >
             <div className="board-container">
-            {state.grid.map((row, rowId) => {
-              return (
-                <div
-                  key={rowId}
-                  className="board-row"
-                  style={{ height: `${state.nodeWidth}px`, width: `${state.nodeWidth * row.length}px` }}
-                >
-                  {row.map((node, nodeId) => {
-                    return (
-                      <Node
-                        key={rowId + nodeId}
-                        row={node.row}
-                        col={node.col}
-                        isVisited={node.isVisited}
-                        isWall={node.isWall}
-                        isStart={node.isStart}
-                        isEnd={node.isEnd}
-                        isPath={node.isPath}
-                        width={state.nodeWidth}
-                        height={state.nodeWidth}
-                        handleNodeMouseDown={() =>
-                          handleNodeMouseDown(node.row, node.col)
-                        }
-                        handleNodeMouseEnter={() =>
-                          handleNodeMouseEnter(node.row, node.col)
-                        }
-                        handleNodeMouseUp={handleNodeMouseUp}
-                      />
-                    );
-                  })}
-                </div>
-              );
-            })}
+              {state.grid.map((row, rowId) => {
+                return (
+                  <div
+                    key={rowId}
+                    className="board-row"
+                    style={{
+                      height: `${state.nodeWidth}px`,
+                      width: `${state.nodeWidth * row.length}px`,
+                    }}
+                  >
+                    {row.map((node, nodeId) => {
+                      return (
+                        <Node
+                          key={rowId + nodeId}
+                          row={node.row}
+                          col={node.col}
+                          isVisited={node.isVisited}
+                          isWall={node.isWall}
+                          isStart={node.isStart}
+                          isEnd={node.isEnd}
+                          isPath={node.isPath}
+                          width={state.nodeWidth}
+                          height={state.nodeWidth}
+                          handleNodeMouseDown={() =>
+                            handleNodeMouseDown(node.row, node.col)
+                          }
+                          handleNodeMouseEnter={() =>
+                            handleNodeMouseEnter(node.row, node.col)
+                          }
+                          handleNodeMouseUp={handleNodeMouseUp}
+                        />
+                      );
+                    })}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -550,7 +582,6 @@ function App() {
           />
         </div>
       </div>
-
     </div>
   );
 }
