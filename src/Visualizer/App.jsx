@@ -216,19 +216,23 @@ function App() {
     if (state.isClearing || state.isGeneratingMaze || state.isVisualizing) {
       return;
     }
-    setState((prevState) => ({
-      ...prevState,
-      grid: prevState.grid.map((prevRow, prevRowId) => {
-        return prevRow.map((prevNode, prevNodeId) => {
-          return {
-            ...prevNode,
-            isVisited: false,
-            isPath: false,
-            distance: Infinity,
-            totalDistance: Infinity,
-          };
-        });
-      }),
+    let newGrid = state.grid.slice();
+    for (let row of newGrid) {
+      for (let node of row) {
+        let newNode = {
+          ...node,
+          isVisited: false,
+          isPath: false,
+          distance: Infinity,
+          totalDistance: Infinity,
+          previousNode: null,
+        };
+        newGrid[node.row][node.col] = newNode;
+      }
+    }
+    setState((prev) => ({
+      ...prev,
+      grid: newGrid,
     }));
   }
 
@@ -247,6 +251,7 @@ function App() {
             isWall: false,
             distance: Infinity,
             totalDistance: Infinity,
+            previousNode: null,
           };
         });
       }),
@@ -257,7 +262,7 @@ function App() {
     if (state.isClearing || state.isGeneratingMaze || state.isVisualizing) {
       return;
     }
-
+    handleClear();
     // disable all control buttons during visualization
     document.querySelectorAll(".btn").forEach(element => {element.classList.add("disabled")})
 
@@ -373,7 +378,10 @@ function App() {
     if (state.isClearing || state.isGeneratingMaze || state.isVisualizing) {
       return;
     }
+    handleClear();
+    console.log(state.grid[0][0].isVisited);
     setState((prev) => ({ ...prev, isVisualizing: true }));
+    console.log(state.grid[0][0].isVisited);
     const { grid } = state;
     const startNode = grid[state.startNode[0]][state.startNode[1]];
     const endNode = grid[state.endNode[0]][state.endNode[1]];
