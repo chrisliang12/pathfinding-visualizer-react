@@ -5,30 +5,30 @@
 
 .page {
   display: block;
-  padding-bottom: 2rem;
 }
 
 .card {
   display: flex;
-  padding: 10px;
+  padding: auto;
+  margin: auto;
   box-shadow: 13px 15px 48px -12px rgba(120, 116, 116, 0.7);
   -webkit-box-shadow: 13px 15px 48px -12px rgba(120, 116, 116, 0.7);
   -moz-box-shadow: 13px 15px 48px -12px rgba(120, 116, 116, 0.7);
+  border-color: rgb(255, 255, 255);
 }
 
 .board, .interface {
   display: inline-block;
   margin: 20px 10px;
   vertical-align: top;
+  text-align: center;
 }
 
+.board-container {
+  margin: auto;
+}
 
 .board-row {
-  padding: 0;
-}
-
-.footer-container {
   display: block;
-  padding: 20px;
-  width: 100%;
+  margin: auto;
 }

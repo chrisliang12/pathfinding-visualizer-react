@@ -4,7 +4,7 @@ li.list-group-item {
 }
 
 .interface-card {
-  min-height: 320px;
+  min-height: 323px;
 }
 
 p {
@@ -34,4 +34,8 @@ p {
 
 .btn-outline-dark {
   border-color: #1F1D36 !important;
+}
+
+.start-row {
+  margin-top: 22px;
 }

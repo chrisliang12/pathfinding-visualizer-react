@@ -12,13 +12,6 @@ import {
   getShortestPathBestFirst,
 } from "../PathFindingAlgo/bestfirst";
 
-// const numCols = Math.floor(window.innerWidth / 45);
-// const numRows = Math.floor((numCols * 3) / 4);
-// const startRow = Math.floor(Math.random() * numRows);
-// const startCol = Math.floor((Math.random() * numCols) / 4);
-// const endRow = Math.floor(Math.random() * numRows);
-// const endCol = Math.floor((Math.random() * numCols) / 2 + numCols / 2);
-
 function App() {
   /*
    * App States
@@ -26,7 +19,7 @@ function App() {
   const [state, setState] = useState({
     grid: [],
     gridWidth: 20 * 20 + 23,
-    gridHeight: 20 * 15 + 20,
+    gridHeight: 20 * 15 + 23,
     startNode: [],
     endNode: [],
     mazeSize: "sm",
@@ -43,6 +36,9 @@ function App() {
   useEffect(() => {
     function handleResize() {
       let nodeWidth;
+      if (state.mazeSize === "sm") {
+        nodeWidth = Math.min(window.innerWidth / 25, 20);
+      }
       if (state.mazeSize === "md") {
         nodeWidth = Math.min(window.innerWidth / 50, 20);
       }
@@ -52,8 +48,8 @@ function App() {
       setState((prev) => ({
         ...prev,
         nodeWidth: nodeWidth,
-        gridWidth: nodeWidth * prev.grid[0].length + 23,
-        gridHeight: nodeWidth * prev.grid.length + 20,
+        gridWidth: (nodeWidth) * prev.grid[0].length + 23,
+        gridHeight: (nodeWidth) * prev.grid.length + 23,
       }));
     }
     window.addEventListener("resize", handleResize);
@@ -70,6 +66,7 @@ function App() {
     if (state.mazeSize === "sm") {
       numRows = 15;
       numCols = 20;
+      nodeWidth = Math.min(window.innerWidth / 25, 20);
     }
 
     if (state.mazeSize === "md") {
@@ -121,7 +118,7 @@ function App() {
       grid: initialGrid,
       startNode: [startRow, startCol],
       endNode: [endRow, endCol],
-      gridHeight: nodeWidth * numRows + 20,
+      gridHeight: nodeWidth * numRows + 23,
       gridWidth: nodeWidth * numCols + 23,
       nodeWidth: nodeWidth,
     }));
@@ -483,7 +480,7 @@ function App() {
         className="container-fluid page"
         style={{
           marginTop: `${
-            state.mazeSize === "sm" ? 150 : state.mazeSize === "md" ? 50 : 0
+            window.innerWidth < 800 ? 0 : state.mazeSize === "sm" ? 150 : state.mazeSize === "md" ? 50 : 0
           }px`,
         }}
       >
@@ -495,12 +492,13 @@ function App() {
               height: `${state.gridHeight}px`,
             }}
           >
+            <div className="board-container">
             {state.grid.map((row, rowId) => {
               return (
                 <div
                   key={rowId}
                   className="board-row"
-                  style={{ height: `${state.nodeWidth}px` }}
+                  style={{ height: `${state.nodeWidth}px`, width: `${state.nodeWidth * row.length}px` }}
                 >
                   {row.map((node, nodeId) => {
                     return (
@@ -528,6 +526,7 @@ function App() {
                 </div>
               );
             })}
+            </div>
           </div>
         </div>
 

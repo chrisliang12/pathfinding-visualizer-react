@@ -202,7 +202,7 @@ export default function Interface(props) {
           </div>
         </li>
 
-        <li className="list-group-item">
+        <li className="list-group-item start-row">
           <div className="row">
             <div className="col-6 btn-col-start">
               <div className="d-grid gap-2">
