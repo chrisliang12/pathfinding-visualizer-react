@@ -294,7 +294,8 @@ function App() {
             ...prev,
             isVisualizing: false,
           }));
-          document.querySelectorAll(".btn").forEach(element => {element.classList.remove("disabled")})
+          document.querySelectorAll(".btn").forEach(element => {element.classList.remove("disabled")});
+          document.querySelector("#preset-btn").classList.add("disabled");
         }, i * (1 * state.animateSpeed));
         return;
       }
@@ -366,6 +367,7 @@ function App() {
               isVisualizing: false,
             }));
             document.querySelectorAll(".btn").forEach(element => {element.classList.remove("disabled")})
+            document.querySelector("#preset-btn").classList.add("disabled");
           }, i * state.animateSpeed);
         }
         return;
@@ -379,9 +381,7 @@ function App() {
       return;
     }
     handleClear();
-    console.log(state.grid[0][0].isVisited);
     setState((prev) => ({ ...prev, isVisualizing: true }));
-    console.log(state.grid[0][0].isVisited);
     const { grid } = state;
     const startNode = grid[state.startNode[0]][state.startNode[1]];
     const endNode = grid[state.endNode[0]][state.endNode[1]];

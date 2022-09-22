@@ -141,7 +141,7 @@ export default function Interface(props) {
               id="maze4"
               autoComplete="off"
             ></input>
-            <label className="btn btn-outline-dark disabled" htmlFor="maze4">
+            <label id="preset-btn" className="btn btn-outline-dark disabled" htmlFor="maze4">
               Preset
             </label>
           </div>
