@@ -11,7 +11,7 @@ p {
   display: flex;
   text-align: left;
   margin: 0px;
-  color: #1F1D36;
+  color: #5C527F;
 }
 
 .control-btn {
@@ -33,9 +33,44 @@ p {
 }
 
 .btn-outline-dark {
-  border-color: #1F1D36 !important;
+  border-color: #5C527F !important;
+  color: #5C527F;
 }
 
 .start-row {
   margin-top: 22px;
+}
+
+#preset-btn-radio {
+  padding: 0;
+
+}
+
+#preset-btn {
+  border: 0;
+  width: 100%;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+input[type=radio]:checked + .btn-outline-dark {
+  background-color:#5C527F;
+}
+
+#preset-btn:hover {
+  background-color: #5C527F;
+}
+
+.dropdown-toggle:focus {
+  background-color: #5C527F;
+}
+
+.btn-success {
+  background-color: #5C527F;
+  border-color: #5C527F;
+}
+
+.btn-danger {
+  background-color: #ECB390;
+  border-color: #ECB390;
 }

@@ -11,6 +11,11 @@ import {
   bestfirst,
   getShortestPathBestFirst,
 } from "../PathFindingAlgo/bestfirst";
+import smMazePreset from "../mazePresets/smMaze";
+import mdMazePreset from "../mazePresets/mdMaze";
+import lgMazePreset from "../mazePresets/lgMaze";
+
+let timeOutIdList = [];
 
 function App() {
   /*
@@ -30,6 +35,7 @@ function App() {
     animateSpeed: 10,
     mouseDown: false,
     nodeWidth: 20,
+    heuristic: "manhatten",
   });
 
   //handle window resize
@@ -211,11 +217,7 @@ function App() {
   /*
    * Start and Clear Control
    */
-
-  function handleClear() {
-    if (state.isClearing || state.isGeneratingMaze || state.isVisualizing) {
-      return;
-    }
+  function handleClearPath() {
     let newGrid = state.grid.slice();
     for (let row of newGrid) {
       for (let node of row) {
@@ -236,12 +238,68 @@ function App() {
     }));
   }
 
+  function handleClear() {
+    if (state.isClearing) return;
+
+    // clear exist timeout
+    if (state.isVisualizing) {
+      for (let id of timeOutIdList) {
+        clearTimeout(id);
+      }
+    }
+
+    // remove disabled className from classname list
+    document.querySelectorAll(".btn").forEach((element) => {
+      element.classList.remove("disabled");
+    });
+
+    // reset timeoutIdList
+    timeOutIdList = [];
+
+    let newGrid = state.grid.slice();
+    for (let row of newGrid) {
+      for (let node of row) {
+        let newNode = {
+          ...node,
+          isVisited: false,
+          isPath: false,
+          distance: Infinity,
+          totalDistance: Infinity,
+          previousNode: null,
+        };
+        newGrid[node.row][node.col] = newNode;
+      }
+    }
+    setState((prev) => ({
+      ...prev,
+      grid: newGrid,
+      isVisualizing: false,
+    }));
+  }
+
   function handleClearAll() {
-    if (state.isClearing || state.isGeneratingMaze || state.isVisualizing) {
+    if (state.isClearing) {
       return;
     }
+
+    // clear exist timeout
+    if (state.isVisualizing) {
+      for (let id of timeOutIdList) {
+        clearTimeout(id);
+      }
+    }
+
+    // remove disabled className from classname list
+    document.querySelectorAll(".btn").forEach((element) => {
+      element.classList.remove("disabled");
+    });
+
+    // reset timeoutIdList
+    timeOutIdList = [];
+
     setState((prevState) => ({
       ...prevState,
+      isVisualizing: false,
       grid: prevState.grid.map((prevRow) => {
         return prevRow.map((prevNode) => {
           return {
@@ -262,9 +320,13 @@ function App() {
     if (state.isClearing || state.isGeneratingMaze || state.isVisualizing) {
       return;
     }
-    handleClear();
+    handleClearPath();
     // disable all control buttons during visualization
-    document.querySelectorAll(".btn").forEach(element => {element.classList.add("disabled")})
+    document
+      .querySelectorAll(".btn:not(#btn-clear, #btn-clear-dropdown)")
+      .forEach((element) => {
+        element.classList.add("disabled");
+      });
 
     switch (state.currentAlgorithm) {
       case "dfs":
@@ -289,18 +351,20 @@ function App() {
   function animatePath(visitedNodesInOrder, nodesInShortestPath) {
     for (let i = 1; i < nodesInShortestPath.length; i++) {
       if (i === nodesInShortestPath.length - 1) {
-        setTimeout(() => {
+        let tempId = setTimeout(() => {
           setState((prev) => ({
             ...prev,
             isVisualizing: false,
           }));
-          document.querySelectorAll(".btn").forEach(element => {element.classList.remove("disabled")});
-          document.querySelector("#preset-btn").classList.add("disabled");
+          document.querySelectorAll(".btn").forEach((element) => {
+            element.classList.remove("disabled");
+          });
         }, i * (1 * state.animateSpeed));
+        timeOutIdList.push(tempId);
         return;
       }
       let node = nodesInShortestPath[i];
-      setTimeout(() => {
+      let tempId = setTimeout(() => {
         setState((prevState) => {
           return {
             ...prevState,
@@ -316,6 +380,7 @@ function App() {
           };
         });
       }, i * (1 * state.animateSpeed));
+      timeOutIdList.push(tempId);
     }
   }
 
@@ -338,7 +403,7 @@ function App() {
     for (let i = 1; i < visitedNodesInOrder.length; i++) {
       const node = visitedNodesInOrder[i];
       // animate visited nodes
-      setTimeout(() => {
+      let tempId = setTimeout(() => {
         setState((prevState) => {
           return {
             ...prevState,
@@ -354,21 +419,25 @@ function App() {
           };
         });
       }, i * state.animateSpeed);
+      timeOutIdList.push(tempId);
 
       if (i === visitedNodesInOrder.length - 1) {
         if (node.row === state.endNode[0] && node.col === state.endNode[1]) {
-          setTimeout(() => {
+          let tempId = setTimeout(() => {
             animatePath(visitedNodesInOrder, nodesInShortestPath);
           }, i * state.animateSpeed);
+          timeOutIdList.push(tempId);
         } else {
-          setTimeout(() => {
+          let tempId = setTimeout(() => {
             setState((prev) => ({
               ...prev,
               isVisualizing: false,
             }));
-            document.querySelectorAll(".btn").forEach(element => {element.classList.remove("disabled")})
-            document.querySelector("#preset-btn").classList.add("disabled");
+            document.querySelectorAll(".btn").forEach((element) => {
+              element.classList.remove("disabled");
+            });
           }, i * state.animateSpeed);
+          timeOutIdList.push(tempId);
         }
         return;
       }
@@ -380,7 +449,6 @@ function App() {
     if (state.isClearing || state.isGeneratingMaze || state.isVisualizing) {
       return;
     }
-    handleClear();
     setState((prev) => ({ ...prev, isVisualizing: true }));
     const { grid } = state;
     const startNode = grid[state.startNode[0]][state.startNode[1]];
@@ -437,7 +505,12 @@ function App() {
     const { grid } = state;
     const startNode = grid[state.startNode[0]][state.startNode[1]];
     const endNode = grid[state.endNode[0]][state.endNode[1]];
-    const visitedNodesInOrder = astar(grid, startNode, endNode);
+    const visitedNodesInOrder = astar(
+      grid,
+      startNode,
+      endNode,
+      state.heuristic
+    );
     const nodesInShortestPath = getShortestPathAstar(endNode);
     animateAlgorithm(visitedNodesInOrder, nodesInShortestPath);
   }
@@ -503,6 +576,81 @@ function App() {
     }
     setState((prev) => ({ ...prev, animateSpeed: 10 }));
   }
+
+  function handleFixedPreset() {
+    let mazeOption = smMazePreset;
+    if (state.mazeSize === "sm") {
+      mazeOption = smMazePreset;
+    } else if (state.mazeSize === "md") {
+      mazeOption = mdMazePreset;
+    } else if (state.mazeSize === "lg") {
+      mazeOption = lgMazePreset;
+    }
+
+    // generate maze
+    let newGrid = state.grid;
+    for (let i = 0; i < mazeOption.length; i++) {
+      newGrid[mazeOption[i][0]][mazeOption[i][1]].isWall = true;
+    }
+
+    for (let i = 0; i < newGrid.length; i++) {
+      for (let j = 0; j < newGrid[0].length; j++) {
+        if (newGrid[i][j].isStart === true) {
+          newGrid[i][j].isStart = false;
+        }
+        if (newGrid[i][j].isEnd === true) {
+          newGrid[i][j].isEnd = false;
+        }
+      }
+    }
+
+    let startNode, endNode;
+    if (state.mazeSize === "sm") {
+      newGrid[13][1].isStart = true;
+      newGrid[1][18].isEnd = true;
+      startNode = [13, 1];
+      endNode = [1, 18];
+    } else if (state.mazeSize === "md") {
+      newGrid[28][1].isStart = true;
+      newGrid[1][38].isEnd = true;
+      startNode = [28, 1];
+      endNode = [1, 38];
+    } else if (state.mazeSize === "lg") {
+      newGrid[38][1].isStart = true;
+      newGrid[1][53].isEnd = true;
+      startNode = [38, 1];
+      endNode = [1, 53];
+    }
+
+    setState((prev) => {
+      return { ...prev, grid: newGrid, startNode: startNode, endNode: endNode };
+    });
+  }
+
+  // function handleSaveMaze() {
+  //   let output = [];
+  //   for (let i = 0; i < state.grid.length; i++) {
+  //     for (let j = 0; j < state.grid[0].length; j++) {
+  //       if (state.grid[i][j].isWall)
+  //         output.push([i, j]);
+  //     }
+  //   }
+  //   const fileName = "my-file";
+  //   const json = JSON.stringify(output);
+  //   const blob = new Blob([json], { type: "application/json" });
+  //   const href = URL.createObjectURL(blob);
+
+  //   // create "a" HTML element with href to file
+  //   const link = document.createElement("a");
+  //   link.href = href;
+  //   link.download = fileName + ".json";
+  //   document.body.appendChild(link);
+  //   link.click();
+
+  //   // clean up "a" element & remove ObjectURL
+  //   document.body.removeChild(link);
+  //   URL.revokeObjectURL(href);
+  // }
 
   return (
     <div className="App">
@@ -587,6 +735,8 @@ function App() {
             handleMazeLg={handleMazeLg}
             handleMazeMd={handleMazeMd}
             handleMazeSm={handleMazeSm}
+            // handleSaveMaze={handleSaveMaze}
+            handleFixedPreset={handleFixedPreset}
           />
         </div>
       </div>

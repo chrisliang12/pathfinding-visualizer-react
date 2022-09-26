@@ -1,9 +1,13 @@
-export function astar(grid, startNode, finishNode) {
+export function astar(grid, startNode, finishNode, whichHeuristic) {
   if (!startNode || !finishNode || startNode === finishNode) {
     return false;
   }
-  let unvisitedNodes = []; //open list
-  let visitedNodesInOrder = []; //closed list
+  let heuristic = manhattenDistance;
+  if (whichHeuristic === "euclidean") {
+    heuristic = euclideanDistance;
+  }
+  let unvisitedNodes = []; 
+  let visitedNodesInOrder = []; 
   startNode.distance = 0;
   unvisitedNodes.push(startNode);
 
@@ -22,17 +26,16 @@ export function astar(grid, startNode, finishNode) {
     let neighbours = getNeighbours(closestNode, grid);
     for (let neighbour of neighbours) {
       let distance = closestNode.distance + 1;
-      //f(n) = g(n) + h(n)
       if (neighbourNotInUnvisitedNodes(neighbour, unvisitedNodes)) {
         unvisitedNodes.unshift(neighbour);
         neighbour.distance = distance;
         neighbour.totalDistance =
-          distance + manhattenDistance(neighbour, finishNode);
+          distance + heuristic(neighbour, finishNode);
         neighbour.previousNode = closestNode;
       } else if (distance < neighbour.distance) {
         neighbour.distance = distance;
         neighbour.totalDistance =
-          distance + manhattenDistance(neighbour, finishNode);
+          distance + heuristic(neighbour, finishNode);
         neighbour.previousNode = closestNode;
       }
     }
@@ -65,6 +68,12 @@ function manhattenDistance(node, finishNode) {
   let x = Math.abs(node.row - finishNode.row);
   let y = Math.abs(node.col - finishNode.col);
   return x + y;
+}
+
+function euclideanDistance(node, finishNode) {
+  let x = (node.row - finishNode.row) ** 2;
+  let y = (node.col - finishNode.col) ** 2;
+  return Math.sqrt(x + y);
 }
 
 export function getShortestPathAstar(finishNode) {

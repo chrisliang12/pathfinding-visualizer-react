@@ -94,60 +94,6 @@ export default function Interface(props) {
         </li>
 
         <li className="list-group-item">
-          <p>Maze</p>
-          <div
-            className="btn-group  control-btn"
-            role="group"
-            aria-label="maze"
-          >
-            <input
-              type="radio"
-              className="btn-check"
-              name="maze"
-              id="maze1"
-              autoComplete="off"
-              defaultChecked
-            ></input>
-            <label onClick={props.handleMazeSm} className="btn btn-outline-dark" htmlFor="maze1">
-              Small
-            </label>
-
-            <input
-              type="radio"
-              className="btn-check"
-              name="maze"
-              id="maze2"
-              autoComplete="off"
-            ></input>
-            <label onClick={props.handleMazeMd} className="btn btn-outline-dark" htmlFor="maze2">
-              Medium
-            </label>
-
-            <input
-              type="radio"
-              className="btn-check"
-              name="maze"
-              id="maze3"
-              autoComplete="off"
-            ></input>
-            <label onClick={props.handleMazeLg} className="btn btn-outline-dark" htmlFor="maze3">
-              Large
-            </label>
-
-            <input
-              type="radio"
-              className="btn-check"
-              name="maze"
-              id="maze4"
-              autoComplete="off"
-            ></input>
-            <label id="preset-btn" className="btn btn-outline-dark disabled" htmlFor="maze4">
-              Preset
-            </label>
-          </div>
-        </li>
-
-        <li className="list-group-item">
           <p>Speed</p>
           <div
             className="btn-group  control-btn"
@@ -202,6 +148,85 @@ export default function Interface(props) {
           </div>
         </li>
 
+        <li className="list-group-item">
+          <p>Maze</p>
+          <div
+            className="btn-group  control-btn"
+            role="group"
+            aria-label="maze"
+          >
+            <input
+              type="radio"
+              className="btn-check"
+              name="maze"
+              id="maze1"
+              autoComplete="off"
+              defaultChecked
+            ></input>
+            <label
+              onClick={props.handleMazeSm}
+              className="btn btn-outline-dark"
+              htmlFor="maze1"
+            >
+              Small
+            </label>
+
+            <input
+              type="radio"
+              className="btn-check"
+              name="maze"
+              id="maze2"
+              autoComplete="off"
+            ></input>
+            <label
+              onClick={props.handleMazeMd}
+              className="btn btn-outline-dark"
+              htmlFor="maze2"
+            >
+              Medium
+            </label>
+
+            <input
+              type="radio"
+              className="btn-check"
+              name="maze"
+              id="maze3"
+              autoComplete="off"
+            ></input>
+            <label
+              onClick={props.handleMazeLg}
+              className="btn btn-outline-dark"
+              htmlFor="maze3"
+            >
+              Large
+            </label>
+
+            <label id="preset-btn-radio" className="btn btn-outline-dark">
+                <button
+                  id="preset-btn"
+                  className="btn btn-outline-dark dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Presets
+                </button>
+                <ul className="dropdown-menu">
+                  <li>
+                    <a onClick={props.handleFixedPreset} className="dropdown-item" href="#">
+                      Fixed
+                    </a>
+                  </li>
+                  <li>
+                    <a onClick={props.handleRandomPreset} className="dropdown-item disabled" href="#">
+                      Random
+                    </a>
+                  </li>
+                </ul>
+            </label>
+          </div>
+        </li>
+
         <li className="list-group-item start-row">
           <div className="row">
             <div className="col-6 btn-col-start">
@@ -218,10 +243,16 @@ export default function Interface(props) {
             <div className="col-6 btn-col-clear">
               <div className="d-grid gap-2">
                 <div className="btn-group">
-                  <button onClick={props.handleClear} type="button" className="btn btn-danger w-100">
+                  <button
+                    onClick={props.handleClear}
+                    type="button"
+                    className="btn btn-danger w-100"
+                    id="btn-clear"
+                  >
                     Clear
                   </button>
                   <button
+                    id="btn-clear-dropdown"
                     type="button"
                     className="btn btn-danger dropdown-toggle dropdown-toggle-split"
                     data-bs-toggle="dropdown"
@@ -230,11 +261,20 @@ export default function Interface(props) {
                     <span className="visually-hidden">Toggle Dropdown</span>
                   </button>
                   <ul className="dropdown-menu">
-                  <li><a onClick={props.handleClearAll} className="dropdown-item" href="#">Clear All</a></li>
+                    <li>
+                      <a
+                        onClick={props.handleClearAll}
+                        className="dropdown-item"
+                        href="#"
+                      >
+                        Clear All
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </div>
             </div>
+            {/* <div onClick={props.handleSaveMaze}>save maze</div> */}
           </div>
         </li>
       </ul>

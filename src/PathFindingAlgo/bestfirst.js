@@ -56,6 +56,12 @@ function manhattenDistance(node, finishNode) {
   return x + y;
 }
 
+function euclideanDistance(node, finishNode) {
+  let x = (node.row - finishNode.row) ** 2;
+  let y = (node.col - finishNode.col) ** 2;
+  return Math.sqrt(x + y);
+}
+
 function neighbourNotInUnvisitedNodes(neighbour, unvisitedNodes) {
   for (let node of unvisitedNodes) {
     if (node.row === neighbour.row && node.col === neighbour.col) {
