@@ -94,7 +94,7 @@ export default function Interface(props) {
         </li>
 
         <li className="list-group-item">
-          <p>Speed</p>
+          <p>Visualization Speed</p>
           <div
             className="btn-group  control-btn"
             role="group"
