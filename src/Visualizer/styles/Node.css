@@ -1,12 +1,11 @@
 .node {
-  border: 1px solid rgb(217, 217, 217);
+  border: 1px solid rgba(61, 60, 66, 0.2);
   display: inline-block;
   padding: 0;
   border-collapse: collapse;
 }
 
 .visited {
-  background-color: blueviolet;
   animation-name: visitedAnimation;
   animation-duration: 0.2s;
   animation-timing-function: ease-out;
@@ -15,23 +14,22 @@
 }
 
 .wall {
-  background-color: #1F1D36;
+  background-color: #343F56;
 }
 
 .unvisited {
-  background-color: white;
+  background-color: #F8F5F1;
 }
 
 .start {
-  background-color: #ECB390;
+  background-color: #387C6D;
 }
 
 .end {
-  background-color: #5C527F;
+  background-color: #E9896A;
 }
 
 .path {
-  background-color: blueviolet;
   animation-name: pathAnimation;
   animation-duration: 0.5s;
   animation-timing-function: ease-out;
@@ -46,12 +44,12 @@
 @keyframes visitedAnimation {
   0% {
     transform: scale(1);
-    background-color: #ECB390;
+    background-color: #FFE0AC;
   }
   
   50% {
     transform: scale(1);
-    background-color: #ECB390;
+    background-color: #FFE0AC;
   }
 
   60% {
@@ -62,29 +60,29 @@
 
   75% {
     transform: scale(0.7);
-    background-color: #CEE5D0;
+    background-color: rgba(56, 124, 109,0.4);
     border-radius: 50%;
   }
 
   100% {
     transform: scale(1);
-    background-color: #94B49F;
+    background-color: rgba(56, 124, 109,0.4);
   }
 }
 
 @keyframes pathAnimation {
   0% {
     transform: scale(1);
-    background-color: #FCF8E8;
+    background-color: white;
   }
 
   50% {
     transform: scale(1);
-    background-color: #76549A;
+    background-color: #FCF8E8;
   }
 
   100% {
     transform: scale(1);
-    background-color: #DF7861;
+    background-color: #FFE0AC;
   }
 }
