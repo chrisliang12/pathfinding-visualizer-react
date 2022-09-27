@@ -82,6 +82,6 @@ input[type=radio]:checked + .btn-outline-dark {
 } */
 
 .btn-danger {
-  background-color: #EE6F57;
-  border-color: #EE6F57;
+  background-color: #E9896A;
+  border-color: #E9896A;
 }
