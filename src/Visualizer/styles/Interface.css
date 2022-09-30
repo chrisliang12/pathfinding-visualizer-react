@@ -93,6 +93,16 @@ input[type=radio]:checked + .btn-outline-dark {
   border-color: #E9896A;
 }
 
+.btn-danger:focus {
+  background-color: #a03f3f !important;
+  border-color: #a03f3f !important;
+}
+
+.btn-danger:hover {
+  background-color: #a03f3f !important;
+  border-color: #a03f3f !important;;
+}
+
 .btn-dark {
   background-color: #343F56;
   border-color: #343F56;
