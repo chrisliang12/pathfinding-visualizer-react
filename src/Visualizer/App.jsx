@@ -35,7 +35,8 @@ function App() {
     animateSpeed: 10,
     mouseDown: false,
     nodeWidth: 20,
-    heuristic: "manhatten",
+    heuristic: "m",
+    useHeuristic: false,
   });
 
   //handle window resize
@@ -316,6 +317,43 @@ function App() {
     }));
   }
 
+  function handleReset() {
+    handleClear();
+    let newGrid = state.grid.slice();
+    console.log(newGrid.length)
+    const numRows = newGrid.length;
+    const numCols = newGrid[0].length;
+    let startRow = Math.floor(Math.random() * (numRows - 2)) + 1;
+    let startCol = Math.floor((Math.random() * numCols) / 4 + 1);
+    let endRow = Math.floor(Math.random() * (numRows - 2)) + 1;
+    let endCol = Math.floor((Math.random() * numCols) / 2 + numCols / 2 - 1);
+
+    while (newGrid[startRow][startCol].isWall) {
+      startRow = Math.floor(Math.random() * (numRows - 2)) + 1;
+      startCol = Math.floor((Math.random() * numCols) / 4 + 1);
+    }
+
+    while (newGrid[endRow][endCol].isWall) {
+      endRow = Math.floor(Math.random() * (numRows - 2)) + 1;
+      endCol = Math.floor((Math.random() * numCols) / 2 + numCols / 2 - 1);
+    }
+
+    newGrid[state.startNode[0]][state.startNode[1]].isStart = false;
+    newGrid[state.endNode[0]][state.endNode[1]].isEnd = false;
+    newGrid[startRow][startCol].isStart = true;
+    newGrid[endRow][endCol].isEnd = true;
+
+    setState(prev => ({
+      ...prev,
+      grid: newGrid,
+      startNode: [startRow, startCol],
+      endNode: [endRow, endCol],
+    }))
+
+    console.log(state)
+
+  }
+
   function handleStart() {
     if (state.isClearing || state.isGeneratingMaze || state.isVisualizing) {
       return;
@@ -492,7 +530,7 @@ function App() {
     const { grid } = state;
     const startNode = grid[state.startNode[0]][state.startNode[1]];
     const endNode = grid[state.endNode[0]][state.endNode[1]];
-    const visitedNodesInOrder = bestfirst(grid, startNode, endNode);
+    const visitedNodesInOrder = bestfirst(grid, startNode, endNode, state.heuristic);
     const nodesInShortestPath = getShortestPathBestFirst(endNode);
     animateAlgorithm(visitedNodesInOrder, nodesInShortestPath);
   }
@@ -522,6 +560,7 @@ function App() {
     setState((prev) => ({
       ...prev,
       currentAlgorithm: "bfs",
+      useHeuristic: false,
     }));
   }
 
@@ -529,6 +568,7 @@ function App() {
     setState((prev) => ({
       ...prev,
       currentAlgorithm: "dfs",
+      useHeuristic: false,
     }));
   }
 
@@ -536,6 +576,7 @@ function App() {
     setState((prev) => ({
       ...prev,
       currentAlgorithm: "dijkstra",
+      useHeuristic: false,
     }));
   }
 
@@ -543,6 +584,7 @@ function App() {
     setState((prev) => ({
       ...prev,
       currentAlgorithm: "astar",
+      useHeuristic: true
     }));
   }
 
@@ -550,6 +592,21 @@ function App() {
     setState((prev) => ({
       ...prev,
       currentAlgorithm: "bestfirst",
+      useHeuristic: true
+    }));
+  }
+
+  function handleHeuristicEuclidean() {
+    setState((prev) => ({
+      ...prev,
+      heuristic: 'e'
+    }));
+  }
+
+  function handleHeuristicManhatten() {
+    setState((prev) => ({
+      ...prev,
+      heuristic: 'm'
     }));
   }
 
@@ -721,6 +778,7 @@ function App() {
         <div className="interface">
           <Interface
             height={state.gridHeight}
+            handleReset={handleReset}
             handleStart={handleStart}
             handleClear={handleClear}
             handleClearAll={handleClearAll}
@@ -737,6 +795,9 @@ function App() {
             handleMazeSm={handleMazeSm}
             // handleSaveMaze={handleSaveMaze}
             handleFixedPreset={handleFixedPreset}
+            handleHeuristicEuclidean={handleHeuristicEuclidean}
+            handleHeuristicManhatten={handleHeuristicManhatten}
+            useHeuristic={state.useHeuristic}
           />
         </div>
       </div>

@@ -21,6 +21,12 @@ p {
 
 .btn-col-start {
   padding: 0;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.btn-col-reset {
+  padding: 0;
   padding-right: 10px;
 }
 
@@ -71,17 +77,33 @@ input[type=radio]:checked + .btn-outline-dark {
   background-color: #387C6D;
   border-color: #387C6D;
 }
-/* .btn-success:hover {
-  background-color: #7896a5 !important;
-  border-color: #7896a5 !important;
+
+.btn-success:hover {
+  background-color: #0c4f40 !important;
+  border-color: #0c4f40 !important;
 }
 
-.btn-success:focus {
-  background-color: #7896a5 !important;
-  border-color: #7896a5 !important;
-} */
+.btn-success.disabled {
+  background-color: #4ca491 !important;
+  border-color: #4ca491 !important;
+}
 
 .btn-danger {
   background-color: #E9896A;
   border-color: #E9896A;
+}
+
+.btn-dark {
+  background-color: #343F56;
+  border-color: #343F56;
+}
+
+.btn-dark:hover {
+  background-color: #617299 !important;
+  border-color: #617299 !important;
+}
+
+.btn.btn-dark.disabled {
+  background-color: #617299 !important;
+  border-color: #617299 !important;
 }

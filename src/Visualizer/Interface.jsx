@@ -93,8 +93,49 @@ export default function Interface(props) {
           </div>
         </li>
 
+        {props.useHeuristic && <li className="list-group-item">
+          <p>Heuristics</p>
+          <div
+            className="btn-group  control-btn"
+            role="group"
+            aria-label="speed"
+          >
+            <input
+              type="radio"
+              className="btn-check"
+              name="heuristic"
+              id="manhatten"
+              autoComplete="off"
+              defaultChecked
+            ></input>
+            <label
+              onClick={props.handleHeuristicManhatten}
+              className="btn btn-outline-dark"
+              htmlFor="manhatten"
+            >
+              Manhatten
+            </label>
+
+            <input
+              type="radio"
+              className="btn-check"
+              name="heuristic"
+              id="euclidean"
+              autoComplete="off"
+            ></input>
+            <label
+              onClick={props.handleHeuristicEuclidean}
+              className="btn btn-outline-dark"
+              htmlFor="euclidean"
+            >
+              Euclidean
+            </label>
+          </div>
+        </li>
+        }
+
         <li className="list-group-item">
-          <p>Visualization Speed</p>
+          <p>Speed</p>
           <div
             className="btn-group  control-btn"
             role="group"
@@ -229,7 +270,19 @@ export default function Interface(props) {
 
         <li className="list-group-item start-row">
           <div className="row">
-            <div className="col-6 btn-col-start">
+            <div className="col-4 btn-col-reset">
+              <div className="d-grid gap-2">
+                <button
+                  onClick={props.handleReset}
+                  type="button"
+                  className="btn btn-dark"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+
+            <div className="col-4 btn-col-start">
               <div className="d-grid gap-2">
                 <button
                   onClick={props.handleStart}
@@ -240,7 +293,10 @@ export default function Interface(props) {
                 </button>
               </div>
             </div>
-            <div className="col-6 btn-col-clear">
+
+            
+
+            <div className="col-4 btn-col-clear">
               <div className="d-grid gap-2">
                 <div className="btn-group">
                   <button
