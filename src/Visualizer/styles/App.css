@@ -27,12 +27,3 @@
   vertical-align: top;
   text-align: center;
 }
-
-.board-container {
-  margin: auto;
-}
-
-.board-row {
-  display: block;
-  margin: auto;
-}

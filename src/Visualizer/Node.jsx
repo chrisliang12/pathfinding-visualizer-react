@@ -16,7 +16,7 @@ export default function Node(props) {
 
   return (
     <div
-      className={"node " + nodeState}
+      className={"node d-inline-block p-0 m-0 " + nodeState}
       style={{ width: `${props.width}px`, height: `${props.height}px` }}
       onMouseDown={props.handleNodeMouseDown}
       onMouseEnter={props.handleNodeMouseEnter}

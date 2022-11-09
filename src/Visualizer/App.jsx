@@ -728,22 +728,18 @@ function App() {
       >
         <div className="board">
           <div
-            className="card"
-            style={{
-              width: `${state.gridWidth}px`,
-              height: `${state.gridHeight}px`,
-            }}
+            className="card p-2"
           >
-            <div className="board-container">
+            <div className="board-container m-auto">
               {state.grid.map((row, rowId) => {
                 return (
                   <div
                     key={rowId}
-                    className="board-row"
-                    style={{
-                      height: `${state.nodeWidth}px`,
-                      width: `${state.nodeWidth * row.length}px`,
-                    }}
+                    className="board-row d-flex"
+                    // style={{
+                    //   height: `${state.nodeWidth}px`,
+                    //   width: `${state.nodeWidth * row.length}px`,
+                    // }}
                   >
                     {row.map((node, nodeId) => {
                       return (

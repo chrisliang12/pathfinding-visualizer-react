@@ -1,7 +1,5 @@
 .node {
   border: 1px solid rgba(61, 60, 66, 0.2);
-  display: inline-block;
-  padding: 0;
   border-collapse: collapse;
 }
 
